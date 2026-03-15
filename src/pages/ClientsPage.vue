@@ -262,6 +262,11 @@
                   客戶
                 </th>
                 <th
+                  class="text-center text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3"
+                >
+                  成交分數
+                </th>
+                <th
                   class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3"
                 >
                   公司
@@ -301,6 +306,25 @@
                     <span class="text-sm text-white font-medium">{{
                       client.name
                     }}</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <ScoreRing
+                      :score="getClientScore(client)"
+                      :size="36"
+                      :stroke-width="2.5"
+                    />
+                    <span
+                      class="text-xs font-medium px-1.5 py-0.5 rounded-full"
+                      :class="[
+                        getScoreColor(getClientScore(client)).bg,
+                        getScoreColor(getClientScore(client)).text,
+                        getScoreColor(getClientScore(client)).border,
+                        'border',
+                      ]"
+                      >{{ getScoreLabel(getClientScore(client)) }}</span
+                    >
                   </div>
                 </td>
                 <td class="px-6 py-4">
@@ -393,7 +417,9 @@ import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth.js";
 import { useClients } from "../composables/useClients.js";
+import { useTrackingSessions } from "../composables/useScores.js";
 import ClientModal from "../components/ClientModal.vue";
+import ScoreRing from "../components/ScoreRing.vue";
 
 const router = useRouter();
 const { user, logout } = useAuth();
@@ -405,6 +431,12 @@ const {
   updateClient,
   deleteClient,
 } = useClients();
+const {
+  fetchSessionsByOwner,
+  calculateClientDealScore,
+  getScoreLabel,
+  getScoreColor,
+} = useTrackingSessions();
 
 const showModal = ref(false);
 const editingClient = ref(null);
@@ -414,6 +446,10 @@ const userInitial = computed(() => {
   if (!user.value?.email) return "?";
   return user.value.email.charAt(0).toUpperCase();
 });
+
+const getClientScore = (client) => {
+  return calculateClientDealScore([client.name, client.company]);
+};
 
 const filteredClients = computed(() => {
   if (!searchQuery.value.trim()) return clients.value;
@@ -470,6 +506,7 @@ watch(
   (newUser) => {
     if (newUser) {
       fetchClients(newUser.uid);
+      fetchSessionsByOwner(newUser.uid);
     }
   },
   { immediate: true },

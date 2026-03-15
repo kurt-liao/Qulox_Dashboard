@@ -84,6 +84,19 @@ export function useTrackingLinks() {
     links.value = links.value.filter((l) => l.id !== linkId);
   };
 
+  const fetchAllLinksForOwner = async (ownerId) => {
+    try {
+      const q = query(
+        collection(db, "tracking_links"),
+        where("ownerId", "==", ownerId),
+      );
+      const snap = await getDocs(q);
+      links.value = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    } catch (err) {
+      console.error("fetchAllLinksForOwner error:", err.message, err.code);
+    }
+  };
+
   const getViewerUrl = (shortCode) => {
     const viewerBase =
       window.location.hostname === "localhost"
@@ -97,6 +110,7 @@ export function useTrackingLinks() {
     isLoading,
     createLink,
     fetchLinksForDocument,
+    fetchAllLinksForOwner,
     deleteLink,
     getViewerUrl,
   };

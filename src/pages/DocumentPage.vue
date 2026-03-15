@@ -355,6 +355,11 @@
                       客戶名稱
                     </th>
                     <th
+                      class="text-center text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3"
+                    >
+                      Intent Score
+                    </th>
+                    <th
                       class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3"
                     >
                       連結
@@ -389,6 +394,25 @@
                         <span class="text-sm text-gray-200 font-medium">{{
                           link.clientName
                         }}</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                      <div class="flex items-center justify-center gap-2">
+                        <ScoreRing
+                          :score="getLinkScore(link)"
+                          :size="36"
+                          :stroke-width="2.5"
+                        />
+                        <span
+                          class="text-xs font-medium px-1.5 py-0.5 rounded-full"
+                          :class="[
+                            getScoreColor(getLinkScore(link)).bg,
+                            getScoreColor(getLinkScore(link)).text,
+                            getScoreColor(getLinkScore(link)).border,
+                            'border',
+                          ]"
+                          >{{ getScoreLabel(getLinkScore(link)) }}</span
+                        >
                       </div>
                     </td>
                     <td class="px-6 py-4">
@@ -500,7 +524,9 @@ import { useRoute, useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth.js";
 import { useDocuments } from "../composables/useDocuments.js";
 import { useTrackingLinks } from "../composables/useTrackingLinks.js";
+import { useTrackingSessions } from "../composables/useScores.js";
 import CreateLinkModal from "../components/CreateLinkModal.vue";
+import ScoreRing from "../components/ScoreRing.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -513,6 +539,18 @@ const {
   deleteLink,
   getViewerUrl,
 } = useTrackingLinks();
+const {
+  fetchSessionsByOwner,
+  getSessionsForLink,
+  calculateDealScore,
+  getScoreLabel,
+  getScoreColor,
+} = useTrackingSessions();
+
+const getLinkScore = (link) => {
+  const linkSessions = getSessionsForLink(link.id);
+  return calculateDealScore(linkSessions);
+};
 
 const docId = computed(() => route.params.id);
 const currentDoc = ref(null);
@@ -583,6 +621,10 @@ onMounted(async () => {
     currentDoc.value = await getDocument(docId.value);
     if (currentDoc.value) {
       await fetchLinksForDocument(docId.value);
+      // Fetch sessions for scoring
+      if (user.value) {
+        await fetchSessionsByOwner(user.value.uid);
+      }
     }
   } finally {
     loadingDoc.value = false;

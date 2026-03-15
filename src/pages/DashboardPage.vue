@@ -175,8 +175,206 @@
           </svg>
         </div>
 
+        <template v-else-if="documents.length > 0">
+          <!-- Stats Overview -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div
+              class="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center"
+                >
+                  <svg
+                    class="w-5 h-5 text-brand-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-2xl font-bold text-white">
+                    {{ stats.totalSessions }}
+                  </p>
+                  <p class="text-xs text-gray-500">閱覽次數</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center"
+                >
+                  <svg
+                    class="w-5 h-5 text-purple-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-2xl font-bold text-white">
+                    {{ stats.totalDwellFormatted }}
+                  </p>
+                  <p class="text-xs text-gray-500">總閱讀時間</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center"
+                >
+                  <span class="text-base">🔥</span>
+                </div>
+                <div>
+                  <p class="text-2xl font-bold text-white">
+                    {{ stats.hotLeads }}
+                  </p>
+                  <p class="text-xs text-gray-500">HOT 客戶</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center"
+                >
+                  <span class="text-base">🟠</span>
+                </div>
+                <div>
+                  <p class="text-2xl font-bold text-white">
+                    {{ stats.warmLeads }}
+                  </p>
+                  <p class="text-xs text-gray-500">WARM 客戶</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <router-link
+              v-for="doc in documents"
+              :key="doc.id"
+              :to="`/dashboard/documents/${doc.id}`"
+              class="group bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5 hover:border-brand-500/30 hover:bg-gray-900/60 transition-all duration-200"
+            >
+              <!-- Top row: PDF info + score -->
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0"
+                >
+                  <svg
+                    class="w-6 h-6 text-red-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                    />
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3
+                    class="text-sm font-semibold text-white group-hover:text-brand-400 transition-colors truncate"
+                  >
+                    {{ doc.name }}
+                  </h3>
+                  <p class="text-xs text-gray-500 mt-0.5 truncate">
+                    {{ doc.fileName }}
+                  </p>
+                </div>
+                <!-- Score Ring -->
+                <ScoreRing
+                  :score="getDocScore(doc.id)"
+                  :size="44"
+                  :stroke-width="3"
+                />
+              </div>
+
+              <!-- Meta row -->
+              <div class="mt-4 flex items-center justify-between">
+                <div class="flex items-center gap-4 text-xs text-gray-500">
+                  <span class="flex items-center gap-1">
+                    <svg
+                      class="w-3.5 h-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+                      />
+                    </svg>
+                    {{ formatDate(doc.createdAt) }}
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <svg
+                      class="w-3.5 h-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.686-3.898a4.5 4.5 0 00-1.242-7.244"
+                      />
+                    </svg>
+                    {{ getDocLinks(doc.id).length }} 連結
+                  </span>
+                </div>
+                <span
+                  class="text-xs font-medium px-2 py-0.5 rounded-full"
+                  :class="[
+                    getScoreColor(getDocScore(doc.id)).bg,
+                    getScoreColor(getDocScore(doc.id)).text,
+                    getScoreColor(getDocScore(doc.id)).border,
+                    'border',
+                  ]"
+                  >{{ getScoreLabel(getDocScore(doc.id)) }}</span
+                >
+              </div>
+            </router-link>
+          </div>
+        </template>
+
         <!-- Empty state -->
-        <div v-else-if="documents.length === 0" class="text-center py-20">
+        <div v-else class="text-center py-20">
           <div
             class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-800/50 border border-gray-700/50 mb-4"
           >
@@ -218,70 +416,6 @@
             上傳 PDF
           </button>
         </div>
-
-        <!-- Document grid -->
-        <div
-          v-else
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        >
-          <router-link
-            v-for="doc in documents"
-            :key="doc.id"
-            :to="`/dashboard/documents/${doc.id}`"
-            class="group bg-gray-900/40 border border-gray-800/50 rounded-2xl p-5 hover:border-brand-500/30 hover:bg-gray-900/60 transition-all duration-200"
-          >
-            <!-- PDF icon + info -->
-            <div class="flex items-start gap-4">
-              <div
-                class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0"
-              >
-                <svg
-                  class="w-6 h-6 text-red-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-                  />
-                </svg>
-              </div>
-              <div class="flex-1 min-w-0">
-                <h3
-                  class="text-sm font-semibold text-white group-hover:text-brand-400 transition-colors truncate"
-                >
-                  {{ doc.name }}
-                </h3>
-                <p class="text-xs text-gray-500 mt-0.5 truncate">
-                  {{ doc.fileName }}
-                </p>
-              </div>
-            </div>
-
-            <!-- Meta -->
-            <div class="mt-4 flex items-center gap-4 text-xs text-gray-500">
-              <span class="flex items-center gap-1">
-                <svg
-                  class="w-3.5 h-3.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-                  />
-                </svg>
-                {{ formatDate(doc.createdAt) }}
-              </span>
-            </div>
-          </router-link>
-        </div>
       </div>
     </main>
 
@@ -299,11 +433,24 @@ import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth.js";
 import { useDocuments } from "../composables/useDocuments.js";
+import { useTrackingLinks } from "../composables/useTrackingLinks.js";
+import { useTrackingSessions } from "../composables/useScores.js";
 import UploadModal from "../components/UploadModal.vue";
+import ScoreRing from "../components/ScoreRing.vue";
 
 const router = useRouter();
 const { user, logout } = useAuth();
 const { documents, isLoading, fetchDocuments } = useDocuments();
+const { links: allLinks, fetchAllLinksForOwner } = useTrackingLinks();
+const {
+  fetchSessionsByOwner,
+  getSessionsForDocument,
+  getSessionsForLink,
+  calculateDealScore,
+  getScoreLabel,
+  getScoreColor,
+  getDashboardStats,
+} = useTrackingSessions();
 
 const showUploadModal = ref(false);
 
@@ -311,6 +458,27 @@ const userInitial = computed(() => {
   if (!user.value?.email) return "?";
   return user.value.email.charAt(0).toUpperCase();
 });
+
+const stats = computed(() => getDashboardStats(allLinks.value));
+
+const getDocLinks = (docId) => {
+  return allLinks.value.filter((l) => l.documentId === docId);
+};
+
+const getDocScore = (docId) => {
+  // Aggregate: best score among all links for this doc
+  const docLinks = getDocLinks(docId);
+  if (docLinks.length === 0) return 0;
+  const scores = docLinks.map((link) => {
+    const linkSessions = getSessionsForLink(link.id);
+    return calculateDealScore(linkSessions);
+  });
+  return Math.max(...scores);
+};
+
+const getDocSessions = (docId) => {
+  return getSessionsForDocument(docId);
+};
 
 const formatDate = (timestamp) => {
   if (!timestamp?.toDate) return "—";
@@ -339,6 +507,8 @@ watch(
   (newUser) => {
     if (newUser) {
       fetchDocuments(newUser.uid);
+      fetchAllLinksForOwner(newUser.uid);
+      fetchSessionsByOwner(newUser.uid);
     }
   },
   { immediate: true },
