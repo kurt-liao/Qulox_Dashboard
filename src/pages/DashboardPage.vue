@@ -25,7 +25,7 @@
             </svg>
           </div>
           <div>
-            <h1 class="text-sm font-semibold text-white">Intent Pulse</h1>
+            <h1 class="text-sm font-semibold text-white">Qulox</h1>
             <p class="text-xs text-gray-500">Dashboard</p>
           </div>
         </div>

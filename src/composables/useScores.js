@@ -3,7 +3,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../services/firebase.js";
 
 /**
- * Reads tracking_sessions from Firestore (written by the intent-pulse viewer)
+ * Reads tracking_sessions from Firestore (written by the qulox viewer)
  * and provides scoring / analytics functions.
  *
  * Each tracking_session document contains:

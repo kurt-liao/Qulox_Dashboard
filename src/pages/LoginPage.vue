@@ -31,7 +31,7 @@
             />
           </svg>
         </div>
-        <h1 class="text-2xl font-semibold text-white">Intent Pulse</h1>
+        <h1 class="text-2xl font-semibold text-white">Qulox</h1>
         <p class="text-sm text-gray-500 mt-1">Dashboard 管理後台</p>
       </div>
 
@@ -129,7 +129,7 @@
       </div>
 
       <p class="text-center text-xs text-gray-600 mt-6">
-        Intent Pulse Platform &copy; 2026
+        Qulox Platform &copy; 2026
       </p>
     </div>
   </div>
