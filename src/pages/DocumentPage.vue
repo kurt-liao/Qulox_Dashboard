@@ -506,25 +506,24 @@
           </div>
         </div>
 
-        <!-- CLOSING ENGINE ANALYTICS -->
-        <div
-          v-if="closingEngineSessions.length > 0"
-          class="px-8 pb-8 space-y-5"
-        >
+        <!-- ═══════════════════════════════════════════════════
+               CLOSING ENGINE ANALYTICS
+          ════════════════════════════════════════════════════ -->
+        <div v-if="allDocSessions.length > 0" class="pb-12">
           <!-- Section header -->
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-3 mb-8">
             <div
               class="flex-1 h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent"
             ></div>
             <div
-              class="flex items-center gap-2 px-3 py-1.5 bg-gray-900/60 border border-gray-800/50 rounded-full"
+              class="flex items-center gap-3 px-4 py-2 bg-gray-900/60 border border-gray-800/50 rounded-full"
             >
               <div
-                class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"
+                class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"
               ></div>
               <span
-                class="text-xs font-semibold text-gray-400 uppercase tracking-widest"
-                >Closing Engine</span
+                class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]"
+                >Target Decoding Interface</span
               >
             </div>
             <div
@@ -532,29 +531,142 @@
             ></div>
           </div>
 
-          <!-- Live presence badge -->
+          <!-- Enhanced Search & Filter Dashboard -->
           <div
-            v-if="liveViewers.length > 0"
-            class="flex items-center gap-3 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl px-4 py-3"
+            class="mx-8 mb-8 p-6 bg-gray-900/30 border border-gray-800/40 rounded-3xl backdrop-blur-sm"
           >
             <div
-              class="w-3 h-3 rounded-full bg-emerald-400 animate-ping shrink-0"
-            ></div>
-            <div>
-              <p class="text-sm font-semibold text-emerald-400">
-                🔴 LIVE — 客戶正在閱讀！
+              class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"
+            >
+              <div>
+                <h3 class="text-sm font-semibold text-white">意圖解碼焦點</h3>
+                <p class="text-xs text-gray-500 mt-1">
+                  {{
+                    selectedLinkId === "all"
+                      ? "正在分析所有客戶的行為軌跡"
+                      : `正在專注分析：${selectedClientName}`
+                  }}
+                </p>
+              </div>
+
+              <!-- Search box -->
+              <div class="relative group">
+                <input
+                  v-model="clientSearchQuery"
+                  type="text"
+                  placeholder="搜尋客戶名稱..."
+                  class="w-full md:w-64 bg-gray-950/50 border border-gray-800 rounded-xl px-4 py-2 text-xs text-gray-300 focus:outline-none focus:border-brand-500/50 transition-all"
+                />
+                <div class="absolute right-3 top-2.5 text-gray-600">
+                  <svg
+                    class="w-3.5 h-3.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Compact Client Grid -->
+            <div
+              class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2"
+            >
+              <button
+                @click="selectedLinkId = 'all'"
+                class="px-3 py-2 rounded-xl text-[11px] font-medium transition-all border text-center"
+                :class="
+                  selectedLinkId === 'all'
+                    ? 'bg-brand-500/10 border-brand-500/30 text-brand-400'
+                    : 'bg-gray-950/30 border-gray-800/50 text-gray-500 hover:text-gray-300'
+                "
+              >
+                All Sources
+              </button>
+              <button
+                v-for="link in filteredLinks"
+                :key="link.id"
+                @click="selectedLinkId = link.id"
+                class="group px-3 py-2 rounded-xl text-[11px] font-medium transition-all border text-left flex items-center gap-2 overflow-hidden"
+                :class="
+                  selectedLinkId === link.id
+                    ? 'bg-brand-500/10 border-brand-500/30 text-brand-400 shadow-[0_0_15px_rgba(139,92,246,0.1)]'
+                    : 'bg-gray-950/30 border-gray-800/50 text-gray-500 hover:border-gray-700'
+                "
+              >
+                <span
+                  class="w-1.5 h-1.5 rounded-full shrink-0"
+                  :class="
+                    getLiveForLink(link.id)
+                      ? 'bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.5)]'
+                      : 'bg-gray-800'
+                  "
+                ></span>
+                <span class="truncate">{{ link.clientName }}</span>
+
+                <!-- Context mini-score (optional hint) -->
+                <span
+                  v-if="getLinkScore(link) > 50"
+                  class="ml-auto text-[9px] text-orange-400/70"
+                  >🔥</span
+                >
+              </button>
+            </div>
+
+            <!-- Empty search state -->
+            <div
+              v-if="filteredLinks.length === 0 && clientSearchQuery"
+              class="py-6 text-center"
+            >
+              <p class="text-xs text-gray-600 italic">
+                找不到符合 「{{ clientSearchQuery }}」 的客戶
               </p>
-              <p class="text-xs text-emerald-600">
-                {{ liveViewers.length }} 位讀者當前在線 —
-                <span v-for="v in liveViewers" :key="v.viewerId" class="mr-2">
-                  {{ v.clientName || v.linkId }} · P{{ v.currentPage }}
+            </div>
+          </div>
+
+          <!-- Live presence badge -->
+          <div
+            v-if="filteredLiveViewers.length > 0"
+            class="mx-8 mb-8 flex items-center gap-4 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl px-5 py-4"
+          >
+            <div class="relative">
+              <div
+                class="w-3.5 h-3.5 rounded-full bg-emerald-400 animate-ping"
+              ></div>
+              <div
+                class="absolute inset-0 w-3.5 h-3.5 rounded-full bg-emerald-400"
+              ></div>
+            </div>
+            <div class="flex-1">
+              <p
+                class="text-sm font-bold text-emerald-400 tracking-wide uppercase text-[11px]"
+              >
+                🔴 Live Intercept Active
+              </p>
+              <p class="text-xs text-emerald-600/80 mt-1">
+                正在偵測 {{ filteredLiveViewers.length }} 個信號 —
+                <span
+                  v-for="v in filteredLiveViewers"
+                  :key="v.viewerId"
+                  class="inline-flex items-center gap-1.5 mr-4 font-medium"
+                >
+                  <span class="text-emerald-400"
+                    >[{{ v.clientName || "Unknown Site" }}]</span
+                  >
+                  <span>定位：Page {{ v.currentPage }}</span>
                 </span>
               </p>
             </div>
           </div>
 
           <!-- The 3 Widget Grid -->
-          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 px-8">
             <VelocityTachometer :sessions="closingEngineSessions" />
             <DecisionPathMap :sessions="closingEngineSessions" />
             <ContentFuelGauge :sessions="closingEngineSessions" />
@@ -618,6 +730,8 @@ const currentDoc = ref(null);
 const loadingDoc = ref(true);
 const showCreateLinkModal = ref(false);
 const copiedId = ref(null);
+const selectedLinkId = ref("all");
+const clientSearchQuery = ref("");
 
 const userInitial = computed(() => {
   if (!user.value?.email) return "?";
@@ -677,13 +791,50 @@ const onLinkCreated = () => {
   fetchLinksForDocument(docId.value);
 };
 
-// ── Closing Engine: sessions for this document's links ───────────
-const closingEngineSessions = computed(() => {
+// Filtered links based on search
+const filteredLinks = computed(() => {
+  if (!clientSearchQuery.value) return links.value;
+  const q = clientSearchQuery.value.toLowerCase();
+  return links.value.filter((link) =>
+    link.clientName?.toLowerCase().includes(q),
+  );
+});
+
+const selectedClientName = computed(() => {
+  if (selectedLinkId.value === "all") return "所有來源";
+  return (
+    links.value.find((l) => l.id === selectedLinkId.value)?.clientName ||
+    "Unknown"
+  );
+});
+
+// ── Closing Engine Data Calculation ───────────────────────────
+
+// All sessions for any link of this document
+const allDocSessions = computed(() => {
   if (!links.value.length) return [];
   const linkIds = new Set(links.value.map((l) => l.id));
-  // Get all sessions matching any link of this doc
   return sessions.value.filter((s) => linkIds.has(s.linkId));
 });
+
+// Final sessions used by the widgets (filtered by selectedLinkId)
+const closingEngineSessions = computed(() => {
+  if (selectedLinkId.value === "all") {
+    return allDocSessions.value;
+  }
+  return allDocSessions.value.filter((s) => s.linkId === selectedLinkId.value);
+});
+
+// Filtered live viewers
+const filteredLiveViewers = computed(() => {
+  if (selectedLinkId.value === "all") return liveViewers.value;
+  return liveViewers.value.filter((v) => v.linkId === selectedLinkId.value);
+});
+
+// Utility for selector indicator
+const getLiveForLink = (linkId) => {
+  return liveViewers.value.some((v) => v.linkId === linkId);
+};
 
 // ── Live Presence via realtime_pings listener ────────────────────
 const liveViewers = ref([]);

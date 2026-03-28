@@ -70,6 +70,11 @@ Displayed below the tracking links table when `closingEngineSessions.length > 0`
 2. **DecisionPathMap** — `pathSequence` from the latest session. Detects loops (e.g. P2↔P5).
 3. **ContentFuelGauge** — aggregated `pageStats.totalDwellMs` per page across all sessions.
 
+Detailed implementation and scoring logic can be found in:
+
+- [Closing Engine Spec](./docs/closing_engine_spec.md)
+- [Intent Scoring Logic](./docs/intent_scoring_logic.md)
+
 Live presence uses `onSnapshot` on `realtime_pings` filtered by the document's `linkIds`, showing viewers active in the last 2 minutes.
 
 ### Viewer URL Convention

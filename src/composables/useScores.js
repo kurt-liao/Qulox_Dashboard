@@ -102,9 +102,17 @@ export function useTrackingSessions() {
     });
 
     let eventBonus = 0;
-    if (hasPrintIntent) eventBonus += 10;
-    if (hasTextCopy) eventBonus += 8;
-    if (totalTextSelections >= 5) eventBonus += 5;
+    if (hasPrintIntent) eventBonus += 8; // was 10
+    if (hasTextCopy) eventBonus += 5; // was 8
+    if (totalTextSelections >= 5) eventBonus += 3;
+
+    // Sharing Detection: Different viewer IDs for the same link session
+    const uniqueViewerIds = new Set(
+      sessionList.map((s) => s.viewerId).filter(Boolean),
+    );
+    if (uniqueViewerIds.size > 1) {
+      eventBonus += 10; // Significant bonus for internal sharing
+    }
 
     // Recency: most recent session within last 3 days = bonus
     let recencyBonus = 0;
@@ -124,9 +132,11 @@ export function useTrackingSessions() {
         : new Date(latest.endedAt || 0);
       const daysSince =
         (Date.now() - latestTime.getTime()) / (1000 * 60 * 60 * 24);
-      if (daysSince <= 1) recencyBonus = 8;
-      else if (daysSince <= 3) recencyBonus = 5;
-      else if (daysSince <= 7) recencyBonus = 2;
+      if (daysSince <= 1)
+        recencyBonus = 5; // was 8
+      else if (daysSince <= 3)
+        recencyBonus = 3; // was 5
+      else if (daysSince <= 7) recencyBonus = 1;
     }
 
     return Math.min(

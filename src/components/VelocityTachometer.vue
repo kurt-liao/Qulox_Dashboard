@@ -253,7 +253,6 @@ const redlineEnd = computed(() => polarToXY(180));
           stroke-width="2"
           stroke-linecap="round"
           style="transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1)"
-          :transform="`rotate(${needleAngle}, ${CX}, ${CY})`"
         />
         <!-- Needle base -->
         <circle :cx="CX" :cy="CY" r="5" fill="white" opacity="0.9" />
