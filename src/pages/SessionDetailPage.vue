@@ -1,7 +1,23 @@
 <template>
   <AppShell>
     <div class="p-8 max-w-5xl mx-auto">
-      <div class="flex items-center justify-between mb-6">
+      <div class="mb-6">
+        <button
+          type="button"
+          @click="goBack"
+          class="inline-flex items-center gap-1.5 mb-3 px-3 py-1.5 text-xs border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100/70 dark:hover:bg-gray-800/70 transition-colors"
+        >
+          <svg
+            class="w-3.5 h-3.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          <span>回到 閱讀紀錄</span>
+        </button>
         <div>
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
             閱讀細節
@@ -10,14 +26,6 @@
             單次閱讀行為的細節：每頁停留時間與關鍵互動。
           </p>
         </div>
-        <button
-          type="button"
-          @click="goBack"
-          class="inline-flex items-center gap-1 px-3 py-1.5 text-xs border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100/70 dark:hover:bg-gray-800/70"
-        >
-          <span>←</span>
-          <span>回到 閱讀紀錄</span>
-        </button>
       </div>
 
       <div v-if="isLoading" class="flex items-center justify-center py-16">
