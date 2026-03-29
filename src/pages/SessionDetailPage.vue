@@ -62,7 +62,7 @@
           <div class="space-y-1">
             <p class="text-xs text-gray-500">Document</p>
             <p class="text-sm font-medium text-gray-900 dark:text-white">
-              {{ session.documentId || '—' }}
+              {{ documentName || session.documentId || '—' }}
             </p>
             <p class="text-xs text-gray-500">
               Link: {{ session.linkId || '—' }}
@@ -226,6 +226,7 @@ const route = useRoute();
 const router = useRouter();
 const session = ref(null);
 const isLoading = ref(true);
+const documentName = ref(null);
 
 const { getScoreLabel, getScoreColor } = useTrackingSessions();
 
@@ -243,6 +244,17 @@ onMounted(async () => {
     const snap = await getDoc(doc(db, "tracking_sessions", id));
     if (snap.exists()) {
       session.value = { id: snap.id, ...snap.data() };
+      // Fetch document name
+      if (session.value.documentId) {
+        try {
+          const docSnap = await getDoc(doc(db, "documents", session.value.documentId));
+          if (docSnap.exists()) {
+            documentName.value = docSnap.data().name || docSnap.data().fileName || null;
+          }
+        } catch (_) {
+          // Silently fall back to ID if fetch fails
+        }
+      }
     }
   } catch (e) {
     console.error("Failed to load session", e);
