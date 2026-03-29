@@ -88,6 +88,30 @@
           </svg>
           客戶管理
         </router-link>
+        <router-link
+          to="/dashboard/sessions"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150"
+          :class="
+            $route.name === 'Sessions'
+              ? 'bg-brand-500/10 text-brand-600 dark:text-brand-400'
+              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800/50'
+          "
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 4.5h16.5M3.75 9.75h16.5m-16.5 5.25h10.5"
+            />
+          </svg>
+          閱讀紀錄
+        </router-link>
       </nav>
 
       <!-- User section -->

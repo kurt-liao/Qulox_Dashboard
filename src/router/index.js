@@ -5,6 +5,8 @@ import LoginPage from "../pages/LoginPage.vue";
 import DashboardPage from "../pages/DashboardPage.vue";
 import DocumentPage from "../pages/DocumentPage.vue";
 import ClientsPage from "../pages/ClientsPage.vue";
+import SessionsPage from "../pages/SessionsPage.vue";
+import SessionDetailPage from "../pages/SessionDetailPage.vue";
 
 const routes = [
   {
@@ -33,6 +35,18 @@ const routes = [
     path: "/dashboard/clients",
     name: "Clients",
     component: ClientsPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/dashboard/sessions",
+    name: "Sessions",
+    component: SessionsPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/dashboard/sessions/:id",
+    name: "SessionDetail",
+    component: SessionDetailPage,
     meta: { requiresAuth: true },
   },
 ];
