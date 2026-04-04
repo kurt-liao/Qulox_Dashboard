@@ -409,34 +409,68 @@
           </div>
         </template>
 
-        <!-- Empty state -->
-        <div v-else class="text-center py-20">
-          <div
-            class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 mb-4"
-          >
-            <svg
-              class="w-8 h-8 text-gray-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-              />
-            </svg>
+        <!-- Onboarding Empty state -->
+        <div v-else class="max-w-2xl mx-auto py-16">
+          <!-- Welcome header -->
+          <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-500/10 border border-brand-500/20 mb-4">
+              <svg class="w-8 h-8 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">歡迎使用 Qulox 👋</h2>
+            <p class="text-sm text-gray-500">只需三個步驟，開始追蹤客戶的閱讀行為</p>
           </div>
-          <h3 class="text-lg font-medium text-gray-600 dark:text-gray-300 mb-1">
-            尚無文件
-          </h3>
-          <p class="text-sm text-gray-500 mb-6">
-            上傳你的第一份 PDF 文件開始使用
-          </p>
+
+          <!-- Steps -->
+          <div class="space-y-4">
+            <!-- Step 1 -->
+            <div class="bg-white dark:bg-gray-900/40 border border-brand-500/30 rounded-2xl p-5 flex items-start gap-4 shadow-sm">
+              <div class="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center shrink-0 mt-0.5">
+                <span class="text-xs font-bold text-white">1</span>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">上傳你的第一份 PDF</h3>
+                <p class="text-xs text-gray-500 mb-3">上傳公司簡報、報價單或任何你想追蹤的文件。</p>
+                <button
+                  @click="showUploadModal = true"
+                  class="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium rounded-xl transition-all duration-200"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                  上傳 PDF
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800/50 rounded-2xl p-5 flex items-start gap-4 shadow-sm opacity-60">
+              <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center shrink-0 mt-0.5">
+                <span class="text-xs font-bold text-gray-500 dark:text-gray-300">2</span>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">為客戶產生專屬追蹤連結</h3>
+                <p class="text-xs text-gray-500">上傳文件後，點擊文件進入詳細頁面，即可為每位客戶產生獨立的追蹤連結。</p>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800/50 rounded-2xl p-5 flex items-start gap-4 shadow-sm opacity-60">
+              <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center shrink-0 mt-0.5">
+                <span class="text-xs font-bold text-gray-500 dark:text-gray-300">3</span>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">分享給客戶，即時追蹤閱讀行為</h3>
+                <p class="text-xs text-gray-500">客戶開啟連結閱讀 PDF 後，你可以在「閱讀紀錄」看到他們的 intent score、每頁停留時間與關鍵互動。</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden button kept for modal trigger compat -->
           <button
+            class="hidden"
             @click="showUploadModal = true"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium rounded-xl transition-all duration-200"
           >
             <svg
               class="w-4 h-4"
